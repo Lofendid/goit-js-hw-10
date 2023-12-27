@@ -16,9 +16,8 @@
 }
 
 .nav-link {
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  line-height: 1.5;
+  font-weight: 400;
+  transition: color 250ms ease-in-out;
 }
 
 .nav-link:hover,

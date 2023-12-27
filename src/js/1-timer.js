@@ -2,12 +2,15 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import iziToast from "izitoast";
 
+const iconError = new URL('/img/icons/error-icon.svg', import.meta.url).href; 
+
 const timerBtn = document.querySelector('[data-start]');
 timerBtn.disabled = true;
 
 const startBtn = 'Start';
 const stopBtn = 'Stop';
 
+const calendar = document.querySelector('#datetime-picker');
 const daysRender = document.querySelector('[data-days]');
 const hoursRender = document.querySelector('[data-hours]');
 const minutesRender = document.querySelector('[data-minutes]');
@@ -17,11 +20,17 @@ let userSelectedDate;
 let timerInt;
 
 const mistakeAlert = () => {
-    // iziToast.show({
-    //     title: 'Hey',
-    //     message: 'What would you like to add?'
-    // });
-    alert("Please choose a date in the future")
+    iziToast.show(
+        {
+            backgroundColor: 'rgba(239, 64, 64, 1)',
+            title: 'Error',
+            theme: 'dark',
+            message: 'Please choose a date in the future',
+            position: 'topRight',
+            timeout: 5000,
+            iconUrl: iconError,
+        }
+    );
 };
 const formatConvert = (value) => {
     return value.toString().padStart(2, '0')
@@ -59,12 +68,12 @@ const dateCheck = () => {
 };
 
 
-flatpickr("#datetime-picker", {
+flatpickr(calendar, {
     enableTime: true,
     time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
-    onClose(selectedDates) {
+    onChange(selectedDates) {
         userSelectedDate = selectedDates[0];
         dateCheck();
     },
@@ -72,6 +81,7 @@ flatpickr("#datetime-picker", {
 
 const startTimer = () => {
     if (userSelectedDate) {
+        calendar.disabled = true;
         timerInt = setInterval(() => {
             const time = userSelectedDate - Date.now();
             timerBtn.textContent = stopBtn;
@@ -94,6 +104,7 @@ const startTimer = () => {
 };
 
 const stopTimer = () => {
+    calendar.disabled = false;
     clearInterval(timerInt);
     timerBtn.textContent = startBtn;
     timerBtn.disabled = true;
@@ -115,4 +126,3 @@ const onClick = (e) => {
 }
 
 timerBtn.addEventListener('click', onClick);
-
