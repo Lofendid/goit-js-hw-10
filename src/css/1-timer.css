@@ -4,6 +4,7 @@
     border-radius: 4px;
     border: 1px solid #808080;
     outline: transparent;
+    transition: border-color 250ms ease-in-out;
 }
 
 #datetime-picker:hover {
